@@ -12,6 +12,7 @@ import View from './pages/View/View';
 import Other from './pages/Other/Other';
 import Exit from './pages/Exit/Exit';
 import Feedback from './pages/Feedback/Feedback';
+import UpdateNotification from './components/UpdateNotification/UpdateNotification';
 
 export default function App() {
   document.addEventListener("keydown", (event) => {
@@ -22,6 +23,7 @@ export default function App() {
 
   return (
     <Router>
+      <UpdateNotification />
       <Background />
       <Navbar />
       <Head />
