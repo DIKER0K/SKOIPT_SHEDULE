@@ -105,6 +105,7 @@ function Feedback() {
           }}
         >
           <TextField
+            sx={{color: 'black'}}
             disabled
             label="Опишите проблему с приложением"
             inputProps={{ style: { fontSize: '1.5rem' } }}
