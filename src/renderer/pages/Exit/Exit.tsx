@@ -105,8 +105,9 @@ function Exit() {
               disabled
               id="outlined-textarea"
               label="Пароль"
-              inputProps={{ style: { fontSize: '1rem' } }}
-              InputLabelProps={{ style: { fontSize: '1rem' } }}
+              // @ts-ignore
+              inputProps={{ style: { fontSize: '1rem', '-webkit-text-fill-color': 'rgba(0, 0, 0, 0.87)' } }}
+              InputLabelProps={{ style: { fontSize: '1rem', color: 'rgba(0, 0, 0, 0.87)' } }}
               placeholder=""
               value={input}
               onChange={(e) => setInput(e.target.value)}

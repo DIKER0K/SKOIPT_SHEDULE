@@ -105,11 +105,11 @@ function Feedback() {
           }}
         >
           <TextField
-            sx={{color: 'black'}}
             disabled
             label="Опишите проблему с приложением"
-            inputProps={{ style: { fontSize: '1.5rem' } }}
-            InputLabelProps={{ style: { fontSize: '1.5rem' } }}
+            // @ts-ignore
+            inputProps={{ style: { fontSize: '1.5rem', '-webkit-text-fill-color': 'rgba(0, 0, 0, 0.87)' } }}
+            InputLabelProps={{ style: { fontSize: '1rem', color: 'rgba(0, 0, 0, 0.87)' } }}
             variant="outlined"
             fullWidth
             multiline
