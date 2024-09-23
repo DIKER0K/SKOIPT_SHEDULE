@@ -1,120 +1,126 @@
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 import axios from 'axios';
 import { useEffect, useMemo, useState } from 'react';
 import './LastNews.css';
 import { motion } from 'framer-motion';
+import { Carousel } from 'react-responsive-carousel';
+import { Title } from '@mui/icons-material';
+import ScaleText from '../ScaleText/ScaleText';
 
 const URL = 'https://vk.com/skoipt_professionalitet';
 
-export default function LastNews() {
-  const [images, setImages] = useState(new Array<React.ReactElement>());
-  const [text, setText] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
+function packImages(images: Array<string>): JSX.Element[]
+{
+  let packedImages = new Array<JSX.Element>()
+  let slideImages = new Array<JSX.Element>()
 
-  useEffect(() => {
+  for (let i = 0; i < images.length; i++)
+  {
+    slideImages.push(
+      <img 
+        src={images[i]} 
+        className='LastNews__image'
+      />
+    )
+
+    if (slideImages.length % 3 == 0)
+    {
+      packedImages.push(
+        <div className='LastNews__images-container'>
+          {slideImages}
+        </div>
+      )
+      slideImages = new Array<JSX.Element>()
+    }
+  }
+
+  if (slideImages.length > 0)
+  {
+    packedImages.push(
+      <div className='LastNews__images-container'>
+        {slideImages}
+      </div>
+    )
+  }
+
+  return packedImages;
+}
+
+export default function LastNews() {
+  const [images, setImages] = useState(new Array<string>());
+  const [text, setText] = useState('Загрузка');
+
+  useEffect(() => 
+  {
     axios
       .get(URL)
-      .then((response) => {
+      .then((response) => 
+      {
         const parser = new DOMParser();
         const htmlDoc = parser.parseFromString(response.data, 'text/html');
 
-        const elements: Array<React.ReactElement> = [];
-        let newText = '';
+        let text = '';
+        let images: string[] = [];
+        
+        //let postTextEl = htmlDoc.querySelectorAll(".wall_post_text")[n];
+        let postTextEl = htmlDoc.querySelector(".wall_post_text");
+        let postContentEl = postTextEl?.parentElement;
 
-        const postTextEl = htmlDoc.querySelector('.wall_post_text');
-        const postContentEl = postTextEl?.parentElement;
-
+        // images
         postContentEl
-          ?.querySelectorAll('div')[1]
-          ?.querySelectorAll('img')
-          .forEach((element, index) => {
-            if (
-              element.classList.value.indexOf(
-                'PhotoPrimaryAttachment__imageElement',
-              ) > -1 ||
-              element.classList.value.indexOf('MediaGrid__imageElement') > -1
-            )
-              elements.push(
-                <motion.img
-                  className="LastNews__img"
-                  src={element.src}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.3, duration: 0.5 }}
-                />
-              );
-          });
+          ?.querySelectorAll("div")[1]
+          ?.querySelectorAll("img")
+          .forEach(element => {
+            if (element.classList.value.indexOf("PhotoPrimaryAttachment__imageElement") > -1 ||
+              element.classList.value.indexOf("MediaGrid__imageElement") > -1)
+            {
+              images.push(element.src)
+            }
+        });
+        
+        // text
+        postContentEl?.querySelectorAll("a").forEach(el => {
+          el.remove()
+        })
+        postContentEl?.querySelector("button")?.remove()
 
-        newText = postTextEl?.textContent ?? '';
+        text = postContentEl?.innerText ?? ""
 
-        setText(newText);
-        setImages(elements);
-        setIsLoaded(true);
+        // sets
+        setText(text);
+        setImages(images);
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log("error: " + e)
         setText('Не удалось загрузить');
-        setIsLoaded(true);
       });
   }, []);
 
-  // Функция для вычисления размера текста в зависимости от длины строки
-  const calculateFontSize = (textLength) => {
-    const MAX_SIZE = 10;  // Максимальный размер текста
-    const MIN_SIZE = 30;  // Минимальный размер текста
-    const MAX_LENGTH = 500; // Максимальное количество символов для максимального размера
-
-    if (textLength <= MAX_LENGTH) {
-      return MAX_SIZE;
-    } else {
-      const size = MAX_SIZE - (textLength - MAX_LENGTH) * 0.2; // Уменьшаем размер текста на 0.2px за каждый символ сверх лимита
-      return Math.max(size, MIN_SIZE);
-    }
-  };
-
-  // Оптимизация: Мемоизация текста и анимация по словам
-  const animatedText = useMemo(() => {
-    const words = text.split(' ');
-    const fontSize = calculateFontSize(text.length); // Вычисляем размер текста
-
-    return words.map((word, index) => (
-      <motion.span
-        key={index}
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.03, duration: 0.4 }}
-        style={{ fontSize: `${fontSize}px`, display: 'inline-block', marginRight: '5px' }}
-      >
-        {word}
-      </motion.span>
-    ));
-  }, [text]);
 
   return (
-    <motion.div
-      className="LastNews"
-      initial={{ opacity: 0, scale: 0, y: 500 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0 }}
-      transition={{ type: 'spring', stiffness: 50 }}
-    >
-      <div className="LastNews__container">
-        {!isLoaded ? (
-          <CircularProgress />
-        ) : (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ type: 'spring', stiffness: 50 }}
-            >
-              {animatedText}
-            </motion.div>
-
-            <div className="LastNews__images">{images}</div>
-          </>
-        )}
+    <div className='LastNews__container'>
+      <div className='LastNews__text-container'>
+        <ScaleText
+          widthContainer={870}
+          heightContainer={365}
+          maxSizeFont={45}>
+            {text}
+        </ScaleText>
       </div>
-    </motion.div>
+
+      <Carousel 
+        className='LastNews__carousel-container'
+        interval={5000}
+        autoPlay
+        showArrows={true}
+        showStatus={false}
+        showIndicators={true}
+        infiniteLoop
+        showThumbs={false}
+        stopOnHover={false}
+      >
+        {packImages(images)}
+      </Carousel>
+    </div>
   );
 }
