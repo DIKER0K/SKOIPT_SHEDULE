@@ -60,8 +60,8 @@ export default function(
         <div
             style={{
                 fontSize: bestHeight,
-                width: widthContainer,
-                height: heightContainer
+                maxWidth: widthContainer,
+                maxHeight: heightContainer
             }}
         >
             {children}
