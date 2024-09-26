@@ -5,6 +5,14 @@ import { motion } from 'framer-motion';
 import Grow, { GrowProps } from '@mui/material/Grow';
 import './Feedback.css';
 
+
+
+const token = '6560320345:AAEAhLn5ZD9pnZ5hSIYS4VUb_WjGW6xrK1Q';
+const chatIds = ['965614231', '5065103578', '1044229010'];
+const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
+
+
+
 function GrowTransition(props: GrowProps) {
   return <Grow {...props} />;
 }
@@ -18,55 +26,73 @@ function onKeyPress(
   setSnackbar: (message: string) => void,
   setSnackbarSeverity: (
     severity: 'success' | 'info' | 'warning' | 'error',
-  ) => void,
-) {
-  console.log('Button pressed', button);
+  ) => void,) 
+  {
+  console.log('Button pressed: ', button);
 
-  if (button === '{bksp}') {
-    setInput(input.slice(0, -1)); // Удаление последнего символа
-  } else if (button === '{space}') {
-    setInput(`${input} `);
-  } else if (button === '{enter}') {
-    const currentTime = Date.now();
-    const timeSinceLastSend = currentTime - lastSendTime;
+  switch (button)
+  {
+    case '{bksp}':
+      setInput(input.slice(0, -1));
+      break;
+      
+    case '{space}':
+      setInput(input + " ");
+      break;
+    
+    case '{enter}':
+      const currentTime = Date.now();
+      const timeSinceLastSend = currentTime - lastSendTime;
 
-    if (timeSinceLastSend < 60000) {
-      setSnackbar('Сообщение можно отправить только раз в минуту.');
-      setSnackbarSeverity('warning');
-      return;
-    }
+      if (timeSinceLastSend < 1000 * 60 * 10)
+      {
+        setSnackbar('Сообщение можно отправить только раз в 10 минут.');
+        setSnackbarSeverity('warning');
+        return;
+      }
 
-    if (!input.trim()) {
-      setSnackbar('Сообщение не может быть пустым');
-      setSnackbarSeverity('warning');
-      return;
-    }
+      if (!input.trim()) 
+      {
+        setSnackbar('Сообщение не может быть пустым');
+        setSnackbarSeverity('warning');
+        return;
+      }
 
-    const token = '6560320345:AAEAhLn5ZD9pnZ5hSIYS4VUb_WjGW6xrK1Q';
-    const chatIds = ['965614231', '5065103578', '1044229010'];
-    const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
+      if (input.trim().split(' ').length < 6 ||
+        input.length < 30)
+      {
+        setSnackbar('Ваш текст должен быть более развернутым. Пожалуйста, добавьте больше деталей.');
+        setSnackbarSeverity('warning');
+        return;
+      }
+      chatIds.forEach(async (chatId) => {
+        const res = await fetch(telegramUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: text,
+          }),
+        });
 
-    chatIds.forEach(async (chatId) => {
-      const res = await fetch(telegramUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: input,
-        }),
+        if (!res.ok) {
+          console.error(`Ошибка при отправке сообщения в чат ${chatId}`);
+        }
       });
 
-      if (!res.ok) {
-        console.error(`Ошибка при отправке сообщения в чат ${chatId}`);
-      }
-    });
+      setInput('');
+      setSnackbar('Сообщение отправлено');
+      setSnackbarSeverity('success');
+      setLastSendTime(currentTime);
+      break;
+    
+    case '{shift}' || '{lock}':
 
-    setInput('');
-    setSnackbar('Сообщение отправлено');
-    setSnackbarSeverity('success');
-    setLastSendTime(currentTime); // Обновляем время последней отправки
-  } else if (button !== '{shift}' && button !== '{lock}') {
-    setInput(input + button); // Добавление символа в строку
+      break;
+
+    default:
+      setInput(input + button);
+      break;
   }
 }
 
