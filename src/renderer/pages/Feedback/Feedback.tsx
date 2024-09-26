@@ -13,6 +13,24 @@ const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
 
 
 
+function GetInfo(): any
+{
+  const { version } = require('../../../../release/app/package.json');
+  
+  let info: any = {};
+
+  // uuid
+  info.uuid = localStorage.getItem("uuid")
+  
+  // version
+  info.version = version
+
+  // Viewport
+  info.viewport = `${window.innerWidth}x${window.innerHeight}`
+
+  return info;
+}
+
 function GrowTransition(props: GrowProps) {
   return <Grow {...props} />;
 }
@@ -65,6 +83,16 @@ function onKeyPress(
         setSnackbarSeverity('warning');
         return;
       }
+
+      let text = "";
+      let info = GetInfo();
+
+      for (let key in info) 
+      {
+        text += `${key}: ${info[key]}\n`
+      }
+      text += "text: " + input;
+
       chatIds.forEach(async (chatId) => {
         const res = await fetch(telegramUrl, {
           method: 'POST',
