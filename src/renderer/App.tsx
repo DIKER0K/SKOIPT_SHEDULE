@@ -14,7 +14,16 @@ import Exit from './pages/Exit/Exit';
 import Feedback from './pages/Feedback/Feedback';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
 
-export default function App() {
+export default function App() 
+{
+  // generate uuid
+  let uuid = localStorage.getItem("uuid")
+  if (uuid == null)
+  {
+    localStorage.setItem("uuid", 
+      Math.random().toString(16).substring(2, 18));
+  }
+
   document.addEventListener("keydown", (event) => {
     if (event.key.toLowerCase() === 'r') {
       window.location.reload();
