@@ -1,11 +1,14 @@
 import Button from '@mui/material/Button';
-import { Box, Paper, styled } from '@mui/material';
+import { Box, Paper, styled, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useNavigate } from 'react-router-dom';
 import useInactivityRedirect from '../../components/Scripts/useInactivityRedirect';
 
+
+
+const { version } = require('../../../../release/app/package.json');
 const CustomButton = styled(Button)<ButtonProps>(() => ({
   backgroundColor: 'white',
   boxShadow:
@@ -16,17 +19,12 @@ const CustomButton = styled(Button)<ButtonProps>(() => ({
   fontSize: '18px',
 }));
 
+
 function Other() {
   useInactivityRedirect();
   const navigate = useNavigate();
   return (
-    <Box
-      className="absolute-center"
-      sx={{
-        width: '500px',
-        height: '300px',
-      }}
-    >
+    <Box className="absolute-center">
       <motion.div
         initial={{ opacity: 0, scale: 0, y: 500 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -36,8 +34,8 @@ function Other() {
         <Paper
           elevation={5}
           sx={{
-            width: '500px',
-            height: '300px',
+            width: 'fit-content',
+            height: 'fit-content',
             display: 'flex',
             justifyContent: 'center',
             textAlign: 'center',
@@ -66,6 +64,12 @@ function Other() {
             >
               Коды
             </CustomButton>
+            <Typography sx={{
+              textAlign: 'right',
+              width: '100%'
+            }}>
+              v{version}
+            </Typography>
           </Box>
         </Paper>
       </motion.div>
