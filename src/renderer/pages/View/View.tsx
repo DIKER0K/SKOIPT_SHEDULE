@@ -20,7 +20,7 @@ function getNextMondayTimestamp() {
   const currentDay = now.getDay();
   const daysUntilMonday = currentDay === 0 ? 0 : 7 - currentDay;
   const nextMonday = new Date(
-    now.getTime() + daysUntilMonday * 24 * 60 * 60 * 1000,
+    now.getTime() + (daysUntilMonday+1) * 24 * 60 * 60 * 1000,
   );
   nextMonday.setHours(0, 0, 0, 0);
   return nextMonday.getTime();
@@ -83,7 +83,16 @@ function Parse(group: string, handleChange: Function) {
 }
 
 function Load(group: string, handleChange: Function) {
-  const schedules = JSON.parse(localStorage.getItem('schedules') ?? '0');
+  let schedules: any;
+
+  try
+  {
+    schedules = JSON.parse(localStorage.getItem('schedules') ?? '0');
+  }
+  catch 
+  { 
+    schedules = null
+  }
 
   if (
     schedules == null ||
@@ -193,7 +202,7 @@ export default function View() {
             height: 75,
             borderRadius: '15px',
             left: 'calc(50% - 700px)',
-            bottom: '30px',
+            bottom: '20px',
           }}
         >
           Назад
