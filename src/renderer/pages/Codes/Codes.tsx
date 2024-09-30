@@ -10,6 +10,7 @@ import './Codes.css';
 const CODES_EXIT = '15128981';
 const CODES_DEVTOOL = '15128982';
 const CODES_RELOAD = '15128983';
+const CODES_RESET = '15128984';
 
 
 function onKeyPress(
@@ -32,6 +33,9 @@ function onKeyPress(
         break;
       case CODES_RELOAD:
         window.location.reload();
+        break;
+      case CODES_RESET:
+        localStorage.clear()
         break;
       default:
         setSnackbar('Неверный пароль');
