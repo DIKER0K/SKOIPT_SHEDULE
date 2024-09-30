@@ -4,12 +4,12 @@ import { useState } from 'react';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
 import useInactivityRedirect from '../../components/Scripts/useInactivityRedirect';
-import './Exit.css';
+import './Codes.css';
 
 
-const PASSWORD_EXIT = '15128981';
-const PASSWORD_DEVTOOL = '15128982';
-const PASSWORD_RELOAD = '15128983';
+const CODES_EXIT = '15128981';
+const CODES_DEVTOOL = '15128982';
+const CODES_RELOAD = '15128983';
 
 
 function onKeyPress(
@@ -24,13 +24,13 @@ function onKeyPress(
   {
     switch (input)
     {
-      case PASSWORD_EXIT:
+      case CODES_EXIT:
         window.close();
         break;
-      case PASSWORD_DEVTOOL:
+      case CODES_DEVTOOL:
         window.electron.openDevTools();
         break;
-      case PASSWORD_RELOAD:
+      case CODES_RELOAD:
         window.location.reload();
         break;
       default:
@@ -63,7 +63,7 @@ function onKeyPress(
   }
 }
 
-function Exit() {
+function Codes() {
   useInactivityRedirect();
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null); // Для сообщений в Snackbar
   const [input, setInput] = useState<string>('');
@@ -104,7 +104,7 @@ function Exit() {
             <TextField
               disabled
               id="outlined-textarea"
-              label="Пароль"
+              label="Код"
               // @ts-ignore
               inputProps={{ style: { fontSize: '1rem', '-webkit-text-fill-color': 'rgba(0, 0, 0, 0.87)' } }}
               InputLabelProps={{ style: { fontSize: '1rem', color: 'rgba(0, 0, 0, 0.87)' } }}
@@ -147,4 +147,4 @@ function Exit() {
   );
 }
 
-export default Exit;
+export default Codes;

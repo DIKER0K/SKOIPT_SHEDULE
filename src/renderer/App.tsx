@@ -10,7 +10,7 @@ import Navbar from './components/Navbar/Navbar';
 import Head from './components/Head/Head';
 import View from './pages/View/View';
 import Other from './pages/Other/Other';
-import Exit from './pages/Exit/Exit';
+import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
 
@@ -54,7 +54,7 @@ function AppContent() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/view" element={<View />} />
           <Route path="/other" element={<Other />} />
-          <Route path="/exit" element={<Exit />} />
+          <Route path="/codes" element={<Codes />} />
           <Route path="/feedback" element={<Feedback />} />
         </Routes>
       </AnimatePresence>
