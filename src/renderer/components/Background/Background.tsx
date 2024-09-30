@@ -14,6 +14,9 @@ const Backgrounds: JSX.Element[] = [
 
 function Background() {
   const [iBackground, setIBackground] = useState(0);
+  const [iBackground, setIBackground] = useState(
+    Math.floor(Math.random() * (Backgrounds.length-1))
+  );
 
   function nextBackground() {
     let temp = iBackground + 1;
