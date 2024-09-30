@@ -7,7 +7,10 @@ import { Carousel } from 'react-responsive-carousel';
 import { Title } from '@mui/icons-material';
 import ScaleText from '../ScaleText/ScaleText';
 
+
 const URL = 'https://vk.com/skoipt_professionalitet';
+
+
 
 function packImages(images: Array<string>): JSX.Element[]
 {
@@ -52,48 +55,77 @@ export default function LastNews() {
 
   useEffect(() => 
   {
-    axios
-      .get(URL)
-      .then((response) => 
-      {
-        const parser = new DOMParser();
-        const htmlDoc = parser.parseFromString(response.data, 'text/html');
+    let news: any;
 
-        let text = '';
-        let images: string[] = [];
-        
-        //let postTextEl = htmlDoc.querySelectorAll(".wall_post_text")[n];
-        let postTextEl = htmlDoc.querySelector(".wall_post_text");
-        let postContentEl = postTextEl?.parentElement;
+    try
+    {
+      news = JSON.parse(localStorage.getItem('news') ?? "{}");
+    }
+    catch
+    {
+      news = null;
+    }
 
-        // images
-        postContentEl
-          ?.querySelectorAll("div")[1]
-          ?.querySelectorAll("img")
-          .forEach(element => {
-            if (element.classList.value.indexOf("PhotoPrimaryAttachment__imageElement") > -1 ||
-              element.classList.value.indexOf("MediaGrid__imageElement") > -1)
-            {
-              images.push(element.src)
-            }
-        });
-        
-        // text
-        postContentEl?.querySelectorAll("a").forEach(el => {
-          el.remove()
+    if (news == null ||
+      news.expires == null ||
+      news.expires < Date.now())
+    {
+      axios
+        .get(URL)
+        .then((response) => 
+        {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(response.data, 'text/html');
+
+          let save: any = {};
+          let text = '';
+          let images: string[] = [];
+          
+          //let postTextEl = htmlDoc.querySelectorAll(".wall_post_text")[n];
+          let postTextEl = htmlDoc.querySelector(".wall_post_text");
+          let postContentEl = postTextEl?.parentElement;
+
+          // images
+          postContentEl
+            ?.querySelectorAll("div")[1]
+            ?.querySelectorAll("img")
+            .forEach(element => {
+              if (element.classList.value.indexOf("PhotoPrimaryAttachment__imageElement") > -1 ||
+                element.classList.value.indexOf("MediaGrid__imageElement") > -1)
+              {
+                images.push(element.src)
+              }
+          });
+          
+          // text
+          postContentEl?.querySelectorAll("a").forEach(el => {
+            el.remove()
+          })
+          postContentEl?.querySelector("button")?.remove()
+
+          text = postContentEl?.innerText ?? ""
+
+          // sets
+          setText(text);
+          setImages(images);
+
+          // saving
+          save.text = text
+          save.images = images
+          save.expires = Date.now() + 1000 * 60 * 60 * 2
+
+          localStorage.setItem('news', JSON.stringify(save))
         })
-        postContentEl?.querySelector("button")?.remove()
-
-        text = postContentEl?.innerText ?? ""
-
-        // sets
-        setText(text);
-        setImages(images);
-      })
-      .catch((e) => {
-        console.log("error: " + e)
-        setText('Не удалось загрузить');
-      });
+        .catch((e) => {
+          console.log("error: " + e)
+          setText('Не удалось загрузить');
+        });
+    }
+    else
+    {
+      setText(news.text);
+      setImages(news.images);
+    }
   }, []);
 
 
