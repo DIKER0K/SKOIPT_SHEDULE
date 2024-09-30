@@ -58,13 +58,13 @@ function Other() {
               onClick={() => navigate('/feedback')}
               sx={{ marginBottom: '15px' }}
             >
-              Сообщить о проблеме
+              Обратная связь
             </CustomButton>
             <CustomButton
               startIcon={<ExitToAppIcon />}
-              onClick={() => navigate('/exit')}
+              onClick={() => navigate('/codes')}
             >
-              Выход
+              Коды
             </CustomButton>
           </Box>
         </Paper>

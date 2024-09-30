@@ -7,6 +7,7 @@ import './Feedback.css';
 
 
 
+const { version } = require('../../../../release/app/package.json');
 const token = '6560320345:AAEAhLn5ZD9pnZ5hSIYS4VUb_WjGW6xrK1Q';
 const chatIds = ['965614231', '5065103578', '1044229010'];
 const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
@@ -15,8 +16,6 @@ const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
 
 function GetInfo(): any
 {
-  const { version } = require('../../../../release/app/package.json');
-  
   let info: any = {};
 
   // uuid
@@ -160,7 +159,7 @@ function Feedback() {
         >
           <TextField
             disabled
-            label="Опишите проблему с приложением"
+            label="Обратная связь"
             // @ts-ignore
             inputProps={{ style: { fontSize: '1.5rem', '-webkit-text-fill-color': 'rgba(0, 0, 0, 0.87)' } }}
             InputLabelProps={{ style: { fontSize: '1rem', color: 'rgba(0, 0, 0, 0.87)' } }}
