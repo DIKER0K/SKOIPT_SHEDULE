@@ -2,18 +2,19 @@ import './Background.css';
 import { IconButton } from '@mui/material';
 import { useState } from 'react';
 import ContrastIcon from '@mui/icons-material/Contrast';
+import BackgroundCubics from './Backgrounds/Background-cubics';
 import BackgroundCircle from './Backgrounds/Background-circle';
 import BackgroundGradient from './Backgrounds/Background-gradient';
 import BackGroundWave from './Backgrounds/Background_wave';
 
 const Backgrounds: JSX.Element[] = [
+  <BackgroundCubics />,
   <BackgroundCircle />,
   <BackGroundWave />,
   <BackgroundGradient />,
 ];
 
 function Background() {
-  const [iBackground, setIBackground] = useState(0);
   const [iBackground, setIBackground] = useState(
     Math.floor(Math.random() * (Backgrounds.length-1))
   );
