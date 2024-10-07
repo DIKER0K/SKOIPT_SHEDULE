@@ -12,15 +12,16 @@ import View from './pages/View/View';
 import Other from './pages/Other/Other';
 import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
+import TicTacToe from './pages/TicTacToe/TicTacToe';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
 
-export default function App() 
+export default function App()
 {
   // generate uuid
   let uuid = localStorage.getItem("uuid")
   if (uuid == null)
   {
-    localStorage.setItem("uuid", 
+    localStorage.setItem("uuid",
       Math.random().toString(16).substring(2, 18));
   }
 
@@ -56,6 +57,7 @@ function AppContent() {
           <Route path="/other" element={<Other />} />
           <Route path="/codes" element={<Codes />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/tic-tac-toe" element={<TicTacToe />} />
         </Routes>
       </AnimatePresence>
     </div>

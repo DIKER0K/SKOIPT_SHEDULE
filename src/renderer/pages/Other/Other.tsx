@@ -3,10 +3,9 @@ import { Box, Paper, styled, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import GamesIcon from '@mui/icons-material/Games';
 import { useNavigate } from 'react-router-dom';
 import useInactivityRedirect from '../../components/Scripts/useInactivityRedirect';
-
-
 
 const { version } = require('../../../../release/app/package.json');
 const CustomButton = styled(Button)<ButtonProps>(() => ({
@@ -18,7 +17,6 @@ const CustomButton = styled(Button)<ButtonProps>(() => ({
   width: '100%',
   fontSize: '18px',
 }));
-
 
 function Other() {
   useInactivityRedirect();
@@ -52,6 +50,12 @@ function Other() {
             }}
           >
             <CustomButton
+              startIcon={<GamesIcon />}
+              onClick={() => navigate('/tic-tac-toe')}
+            >
+              Крестики-нолики
+            </CustomButton>
+            <CustomButton
               startIcon={<ErrorOutlineIcon />}
               onClick={() => navigate('/feedback')}
               sx={{ marginBottom: '15px' }}
@@ -61,6 +65,7 @@ function Other() {
             <CustomButton
               startIcon={<ExitToAppIcon />}
               onClick={() => navigate('/codes')}
+              sx={{ marginBottom: '15px' }}
             >
               Коды
             </CustomButton>
