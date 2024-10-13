@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './View.css';
+import useInactivityRedirect from '../../components/Scripts/useInactivityRedirect';
 import "../../App.css"
 
 const CustomButton = styled(Button)<ButtonProps>(() => ({
@@ -89,8 +90,8 @@ function Load(group: string, handleChange: Function) {
   {
     schedules = JSON.parse(localStorage.getItem('schedules') ?? '0');
   }
-  catch 
-  { 
+  catch
+  {
     schedules = null
   }
 
@@ -106,6 +107,7 @@ function Load(group: string, handleChange: Function) {
 }
 
 export default function View() {
+  useInactivityRedirect();
   const [schedule, setSchedule] = React.useState(
     <CircularProgress sx={{ marginTop: '280px' }} />
   );
@@ -199,7 +201,7 @@ export default function View() {
           sx={{
             position: 'absolute',
             width: 240,
-            height: 75,
+            height: 100,
             borderRadius: '15px',
             left: 'calc(50% - 700px)',
             bottom: '20px',

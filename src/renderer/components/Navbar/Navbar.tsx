@@ -43,25 +43,27 @@ function Navbar() {
 
   return (
     <Paper
-      elevation={1}
+      elevation={3}
       sx={{
-        borderRadius: '15px',
+        borderRadius: '25px',
         position: 'absolute',
         zIndex: '1',
         bottom: '20px',
         left: '50%',
         transform: 'translate(-50%)',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        backdropFilter: 'blur(10px)',
       }}
     >
       <BottomNavigation
         sx={{
           width: 700,
-          height: 80,
-          borderRadius: '15px',
-          position: 'absolute',
-          bottom: '0px',
-          left: '50%',
-          transform: 'translate(-50%)',
+          height: 100,
+          borderRadius: '25px',
+          '& .MuiBottomNavigationAction-root': {
+            minWidth: 'auto',
+            padding: '6px 0',
+          },
         }}
         showLabels
         value={value}
@@ -71,31 +73,31 @@ function Navbar() {
           label="Главная"
           value="Main"
           onClick={() => navigate('/')}
-          icon={<HomeIcon fontSize="large" />}
+          icon={<HomeIcon sx={{ fontSize: 36 }} />}
         />
         <BottomNavigationAction
           label="Новости"
           value="News"
           onClick={() => navigate('/news')}
-          icon={<FeedIcon fontSize="large" />}
+          icon={<FeedIcon sx={{ fontSize: 36 }} />}
         />
         <BottomNavigationAction
           label="Расписание"
           value="Schedule"
           onClick={() => navigate('/schedule')}
-          icon={<TodayIcon fontSize="large" />}
+          icon={<TodayIcon sx={{ fontSize: 36 }} />}
         />
         <BottomNavigationAction
           label="Звонки"
           value="Calls"
           onClick={() => navigate('/calls')}
-          icon={<NotificationsActiveIcon fontSize="large" />}
+          icon={<NotificationsActiveIcon sx={{ fontSize: 36 }} />}
         />
         <BottomNavigationAction
           label="Прочее"
           value="Other"
           onClick={() => navigate('/other')}
-          icon={<MoreHorizIcon fontSize="large" />}
+          icon={<MoreHorizIcon sx={{ fontSize: 36 }} />}
         />
       </BottomNavigation>
     </Paper>
