@@ -14,31 +14,80 @@ import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
 import TicTacToe from './pages/TicTacToe/TicTacToe';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
+import { LoadGroups } from "./utils/ScheduleLoad";
+import { createRef, useEffect, useRef, useState } from 'react';
 
-export default function App()
+
+const LoadFunctions = [
+  LoadGroups,
+]
+const LoadFunctionsMsg = [
+  "загрузка списка групп",
+]
+
+function Event_keydown(event: KeyboardEvent)
 {
-  // generate uuid
+  switch (event.key.toLowerCase())
+  {
+    case "r":
+      window.location.reload();
+      break;
+  }
+}
+
+function LoadUUID()
+{
   let uuid = localStorage.getItem("uuid")
   if (uuid == null)
   {
     localStorage.setItem("uuid",
       Math.random().toString(16).substring(2, 18));
   }
+}
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() === 'r') {
-      window.location.reload();
-    }
-  });
+async function Load(handlerChangeText: Function)
+{
+  for (let i = 0; i < LoadFunctions.length; i++)
+  {
+    handlerChangeText(LoadFunctionsMsg[i] + `(${i+1}/${LoadFunctions.length})`)
+
+    let status = await LoadFunctions[i]()
+
+    
+  }
+}
+
+export default function App()
+{
+  let loadRef = useRef(null);
+  let [loadText, setLoadText] = useState("Загрузка");
+
+  LoadUUID();
+
+  // async loads
+  useEffect(() => {
+    Load(setLoadText)
+    .then((result) => {
+      // @ts-ignore
+      loadRef.current?.remove()
+    })
+  }, [])
+
+  document.addEventListener("keydown", Event_keydown);
 
   return (
-    <Router>
-      <UpdateNotification />
-      <Background />
-      <Navbar />
-      <Head />
-      <AppContent />
-    </Router>
+    <div>
+      <div className='app__load' ref={loadRef}>
+        <div className='app__loadbar absolute-center'>{loadText}</div>
+      </div>
+      <Router>
+        <UpdateNotification />
+        <Background />
+        <Navbar />
+        <Head />
+        <AppContent />
+      </Router>
+    </div>
   );
 }
 
