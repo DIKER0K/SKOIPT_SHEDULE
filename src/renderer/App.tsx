@@ -1,5 +1,4 @@
 import { MemoryRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import './App.css';
 import { AnimatePresence } from 'framer-motion';
 import Home from './pages/Home/Home';
 import Calls from './pages/Calls/Calls';
@@ -14,16 +13,21 @@ import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
 import TicTacToe from './pages/TicTacToe/TicTacToe';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
-import { LoadGroups } from "./utils/ScheduleLoad";
-import { createRef, useEffect, useRef, useState } from 'react';
+import { LoadGroups, LoadSchedule } from "./utils/ScheduleLoad";
+import { useEffect, useRef, useState } from 'react';
+import { LinearProgress } from '@mui/material';
+import './App.css';
 
 
 const LoadFunctions = [
   LoadGroups,
+  LoadSchedule,
 ]
 const LoadFunctionsMsg = [
   "загрузка списка групп",
+  "Загрузка расписания групп",
 ]
+
 
 function Event_keydown(event: KeyboardEvent)
 {
@@ -45,13 +49,13 @@ function LoadUUID()
   }
 }
 
-async function Load(handlerChangeText: Function)
+async function Load(handlerChangeText: Function, handleProgress: Function)
 {
   for (let i = 0; i < LoadFunctions.length; i++)
   {
-    handlerChangeText(LoadFunctionsMsg[i] + `(${i+1}/${LoadFunctions.length})`)
+    handlerChangeText(LoadFunctionsMsg[i])
 
-    let status = await LoadFunctions[i]()
+    let status = await LoadFunctions[i](handleProgress)
 
     
   }
@@ -61,12 +65,13 @@ export default function App()
 {
   let loadRef = useRef(null);
   let [loadText, setLoadText] = useState("Загрузка");
+  let [statusLoader, setStatusLoader] = useState(0);
 
   LoadUUID();
 
   // async loads
   useEffect(() => {
-    Load(setLoadText)
+    Load(setLoadText, setStatusLoader)
     .then((result) => {
       // @ts-ignore
       loadRef.current?.remove()
@@ -78,7 +83,8 @@ export default function App()
   return (
     <div>
       <div className='app__load' ref={loadRef}>
-        <div className='app__loadbar absolute-center'>{loadText}</div>
+        <div className='app__loadbar absolute-center'>{loadText}
+        <LinearProgress variant='determinate' value={statusLoader} sx={{height:"20px", borderRadius: "10px"}}/></div>
       </div>
       <Router>
         <UpdateNotification />
