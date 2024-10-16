@@ -1,5 +1,4 @@
 import { MemoryRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import './App.css';
 import { AnimatePresence } from 'framer-motion';
 import Home from './pages/Home/Home';
 import Calls from './pages/Calls/Calls';
@@ -14,31 +13,87 @@ import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
 import TicTacToe from './pages/TicTacToe/TicTacToe';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
+import { LoadGroups, LoadSchedule } from "./utils/ScheduleLoad";
+import { useEffect, useRef, useState } from 'react';
+import { LinearProgress } from '@mui/material';
+import './App.css';
 
-export default function App()
+
+const LoadFunctions = [
+  LoadGroups,
+  LoadSchedule,
+]
+const LoadFunctionsMsg = [
+  "загрузка списка групп",
+  "Загрузка расписания групп",
+]
+
+
+function Event_keydown(event: KeyboardEvent)
 {
-  // generate uuid
+  switch (event.key.toLowerCase())
+  {
+    case "r":
+      window.location.reload();
+      break;
+  }
+}
+
+function LoadUUID()
+{
   let uuid = localStorage.getItem("uuid")
   if (uuid == null)
   {
     localStorage.setItem("uuid",
       Math.random().toString(16).substring(2, 18));
   }
+}
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() === 'r') {
-      window.location.reload();
-    }
-  });
+async function Load(handlerChangeText: Function, handleProgress: Function)
+{
+  for (let i = 0; i < LoadFunctions.length; i++)
+  {
+    handlerChangeText(LoadFunctionsMsg[i])
+
+    let status = await LoadFunctions[i](handleProgress)
+
+    
+  }
+}
+
+export default function App()
+{
+  let loadRef = useRef(null);
+  let [loadText, setLoadText] = useState("Загрузка");
+  let [statusLoader, setStatusLoader] = useState(0);
+
+  LoadUUID();
+
+  // async loads
+  useEffect(() => {
+    Load(setLoadText, setStatusLoader)
+    .then((result) => {
+      // @ts-ignore
+      loadRef.current?.remove()
+    })
+  }, [])
+
+  document.addEventListener("keydown", Event_keydown);
 
   return (
-    <Router>
-      <UpdateNotification />
-      <Background />
-      <Navbar />
-      <Head />
-      <AppContent />
-    </Router>
+    <div>
+      <div className='app__load' ref={loadRef}>
+        <div className='app__loadbar absolute-center'>{loadText}
+        <LinearProgress variant='determinate' value={statusLoader} sx={{height:"20px", borderRadius: "10px"}}/></div>
+      </div>
+      <Router>
+        <UpdateNotification />
+        <Background />
+        <Navbar />
+        <Head />
+        <AppContent />
+      </Router>
+    </div>
   );
 }
 
