@@ -2,6 +2,9 @@ html {
   height:100%;
   position: fixed;
 }
+.MuiLinearProgress-bar--transition span {
+  transition: transform .05s linear;
+}
 #root {
   height: 100%;
 }

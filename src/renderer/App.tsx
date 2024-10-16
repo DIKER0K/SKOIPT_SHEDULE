@@ -36,6 +36,10 @@ function Event_keydown(event: KeyboardEvent)
     case "r":
       window.location.reload();
       break;
+
+    case "d":
+      window.electron.openDevTools();
+      break;
   }
 }
 
@@ -49,6 +53,22 @@ function LoadUUID()
   }
 }
 
+function CheckVersion()
+{
+  const { version } = require('../../release/app/package.json');
+
+  if (localStorage.getItem("version")?.split(".")[0] == version.split(".")[0])
+  {
+    return;
+  }
+  
+  let uuid = localStorage.getItem("uuid") ?? ""
+  localStorage.clear();
+  
+  localStorage.setItem("uuid", uuid);
+  localStorage.setItem("version", version);
+}
+
 async function Load(handlerChangeText: Function, handleProgress: Function)
 {
   for (let i = 0; i < LoadFunctions.length; i++)
@@ -56,8 +76,6 @@ async function Load(handlerChangeText: Function, handleProgress: Function)
     handlerChangeText(LoadFunctionsMsg[i])
 
     let status = await LoadFunctions[i](handleProgress)
-
-    
   }
 }
 
@@ -68,6 +86,7 @@ export default function App()
   let [statusLoader, setStatusLoader] = useState(0);
 
   LoadUUID();
+  CheckVersion();
 
   // async loads
   useEffect(() => {
@@ -84,7 +103,15 @@ export default function App()
     <div>
       <div className='app__load' ref={loadRef}>
         <div className='app__loadbar absolute-center'>{loadText}
-        <LinearProgress variant='determinate' value={statusLoader} sx={{height:"20px", borderRadius: "10px"}}/></div>
+        <LinearProgress 
+          className='MuiLinearProgress-bar--transition-off'
+          variant='determinate' 
+          value={statusLoader} 
+          sx={{
+            height:"20px", 
+            borderRadius: "10px"
+          }}
+        /></div>
       </div>
       <Router>
         <UpdateNotification />
