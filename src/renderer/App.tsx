@@ -13,7 +13,7 @@ import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
 import TicTacToe from './pages/TicTacToe/TicTacToe';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
-import { LoadGroups, LoadSchedule } from "./utils/ScheduleLoad";
+import { LoadGroups, LoadSchedule, LoadTeacher } from "./utils/ScheduleLoad";
 import { useEffect, useRef, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 import './App.css';
@@ -22,11 +22,14 @@ import './App.css';
 const LoadFunctions = [
   LoadGroups,
   LoadSchedule,
+  LoadTeacher,
 ]
 const LoadFunctionsMsg = [
   "загрузка списка групп",
   "Загрузка расписания групп",
+  "Подготовка",
 ]
+
 
 
 function Event_keydown(event: KeyboardEvent)
@@ -57,12 +60,8 @@ function CheckVersion()
 {
   const { version } = require('../../release/app/package.json');
 
-  if (localStorage.getItem("version")?.split(".")[0] == version.split(".")[0])
+  if (localStorage.getItem("version") == version)
   {
-    if (localStorage.getItem("version") != version)
-    {
-      localStorage.setItem("version", version);
-    }
     return;
   }
   

@@ -142,3 +142,32 @@ async function LoadGroup(group: string): Promise<any>
   
   return schedule;
 }
+
+export async function LoadTeacher(handleProgress: Function): Promise<any>
+{
+  let schedule: any = JSON.parse(localStorage.getItem('schedules') ?? '{}').schedule;
+  let teachers: Array<string> = [];
+
+  for (let [key, value] of Object.entries(schedule))
+  {
+    //@ts-ignore
+    for (let [i, o] of Object.entries(value))
+    {
+      //@ts-ignore
+      for (let [j, k] of Object.entries(o))
+      {
+        let teacher = findTeacher(k + "");
+        if (!!teacher && !teachers.includes(teacher))
+        {
+          teachers.push(teacher);
+        }
+      }
+    }
+  }
+  console.log(teachers.sort())
+}
+
+function findTeacher(text: string): string | null {
+  const match = text.match(/(?<=\s)[^\s]+\s[a-zа-яё]\.[a-zа-яё]\./i);
+  return match ? match[0].trim() : null;
+}
