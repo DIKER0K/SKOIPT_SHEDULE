@@ -61,9 +61,9 @@ function onKeyPress(
       const currentTime = Date.now();
       const timeSinceLastSend = currentTime - lastSendTime;
 
-      if (timeSinceLastSend < 1000 * 60 * 10)
+      if (timeSinceLastSend < 1000 * 60 * 2)
       {
-        setSnackbar('Сообщение можно отправить только раз в 10 минут.');
+        setSnackbar('Сообщение можно отправить только раз в 2 минуты.');
         setSnackbarSeverity('warning');
         return;
       }
@@ -71,14 +71,6 @@ function onKeyPress(
       if (!input.trim()) 
       {
         setSnackbar('Сообщение не может быть пустым');
-        setSnackbarSeverity('warning');
-        return;
-      }
-
-      if (input.trim().split(' ').length < 6 ||
-        input.length < 30)
-      {
-        setSnackbar('Ваш текст должен быть более развернутым. Пожалуйста, добавьте больше деталей.');
         setSnackbarSeverity('warning');
         return;
       }
@@ -133,10 +125,11 @@ function Feedback() {
 
   return (
     <Box
-      className="absolute-center"
+      className="absolute-center hg-button--size"
       sx={{
-        width: '600px',
-        height: '400px',
+        width: '1000px',
+        height: 'fit-content',
+        fontSize: '28px'
       }}
     >
       <motion.div
@@ -148,8 +141,8 @@ function Feedback() {
         <Paper
           elevation={5}
           sx={{
-            width: '600px',
-            height: '400px',
+            width: '100%',
+            height: '100%',
             display: 'flex',
             justifyContent: 'center',
             textAlign: 'center',

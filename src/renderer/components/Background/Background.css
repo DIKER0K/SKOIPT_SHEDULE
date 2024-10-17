@@ -6,7 +6,7 @@
 }
 
 .Background__Button-theme {
-  z-index: 2;
+  z-index: 1;
   backdrop-filter: blur(24px);
   width: 64px;
   height: 64px;

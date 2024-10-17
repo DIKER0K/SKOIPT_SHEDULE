@@ -59,6 +59,10 @@ function CheckVersion()
 
   if (localStorage.getItem("version")?.split(".")[0] == version.split(".")[0])
   {
+    if (localStorage.getItem("version") != version)
+    {
+      localStorage.setItem("version", version);
+    }
     return;
   }
   

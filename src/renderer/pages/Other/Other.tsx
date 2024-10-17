@@ -12,7 +12,7 @@ const CustomButton = styled(Button)<ButtonProps>(() => ({
   backgroundColor: 'white',
   boxShadow:
     '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)',
-  margin: '15px',
+  margin: '10px',
   color: 'black',
   width: '100%',
   fontSize: '18px',
@@ -58,14 +58,12 @@ function Other() {
             <CustomButton
               startIcon={<ErrorOutlineIcon />}
               onClick={() => navigate('/feedback')}
-              sx={{ marginBottom: '15px' }}
             >
               Обратная связь
             </CustomButton>
             <CustomButton
               startIcon={<ExitToAppIcon />}
               onClick={() => navigate('/codes')}
-              sx={{ marginBottom: '15px' }}
             >
               Коды
             </CustomButton>

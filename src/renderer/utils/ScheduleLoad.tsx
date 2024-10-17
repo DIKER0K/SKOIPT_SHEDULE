@@ -26,46 +26,46 @@ function getNextMondayTimestamp() {
 
 export async function LoadGroups(handleProgress: Function): Promise<Boolean>
 {
-    let cources = JSON.parse(localStorage.getItem('cources') ?? '0');
-  
-    if (cources != 0 && cources.expires - Date.now() > 0) return true;
+  let cources = JSON.parse(localStorage.getItem('cources') ?? '0');
 
+  if (cources != 0 && cources.expires - Date.now() > 0) return true;
 
     // init
     cources = {};
     cources.expires = Date.now() + 1000 * 60 * 60 * 24 * 30; // next update
-    let loaded: number = 0; // count loaded cources
     cources.groups = [];
   
-    for (let groupI = 0; groupI < 4; groupI++) 
+    for (let loaded = 0; loaded < 4;) 
     {
-        try
-        {
-            cources.groups[groupI] = [];
-            
-            let response = await axios.get(CourceUrls[groupI])
+      try
+      {
+          cources.groups[loaded] = [];
+          
+          let response = await axios.get(CourceUrls[loaded])
     
-            const htmlDoc = parser.parseFromString(response.data, 'text/html');
+          const htmlDoc = parser.parseFromString(response.data, 'text/html');
     
-            const groupsDoc = htmlDoc
-              .querySelector('[itemprop="articleBody"]')
-              ?.querySelectorAll('img');
+          const groupsDoc = htmlDoc
+            .querySelector('[itemprop="articleBody"]')
+            ?.querySelectorAll('img');
     
-            groupsDoc?.forEach((element) => {
-              cources.groups[groupI].push(element.alt);
-            });
-            
-            loaded++;
-            handleProgress(loaded / CourceUrls.length * 100)
-            if (loaded == CourceUrls.length) {
-              localStorage.setItem('cources', JSON.stringify(cources));
-              return true;
-            }
-        }
-        catch {}
-    }
-    
-    return false;
+          groupsDoc?.forEach((element) => {
+            cources.groups[loaded].push(element.alt);
+          });
+          
+          loaded++;
+          handleProgress(loaded / CourceUrls.length * 100)
+          if (loaded == CourceUrls.length) {
+            localStorage.setItem('cources', JSON.stringify(cources));
+            return true;
+          }
+      }
+      catch (e)
+      {
+        console.log("failed load groups: " + e)
+      }
+  }
+  return false;
 }
 
 export async function LoadSchedule(handleProgress: Function): Promise<Boolean>
