@@ -59,7 +59,11 @@ function AnimatedRect({
         y: yValues,
         rotate: [rotateFrom, rotateTo],
       }}
-      transition={{ duration, repeat: Infinity }}
+      transition={{ 
+        duration, 
+        repeat: Infinity,
+        
+       }}
     />
   );
 }
@@ -89,6 +93,7 @@ export default function () {
         duration={7}
         xValues={['25%', '0%', '25%']}
         yValues={['0%', '25%', '0%']}
+        
       />
       <AnimatedRect
         gradientId="Gradient2"

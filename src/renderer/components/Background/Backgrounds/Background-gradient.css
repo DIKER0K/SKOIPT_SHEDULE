@@ -21,14 +21,17 @@
 .background__bg--1 {
     animation-direction: alternate;
     animation-duration: 3s;
+    animation-timing-function: steps(75);
 }
 .background__bg--2 {
     animation-direction: alternate-reverse;
     animation-duration: 4s;
+    animation-timing-function: steps(100);
 }
 .background__bg--3 {
     animation-direction: alternate;
     animation-duration: 5s;
+    animation-timing-function: steps(125);
 }
 @keyframes background-slide {
     from {

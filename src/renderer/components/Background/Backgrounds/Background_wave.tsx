@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createNoise3D } from 'simplex-noise';
 
+const frameRate = 15;
+
 function Background_wave({
   children,
   className,
@@ -9,7 +11,7 @@ function Background_wave({
   waveWidth,
   backgroundFill,
   blur = 10,
-  speed = 'slow',
+  speed = 0.005,
   waveOpacity = 0.5,
   ...props
 }: {
@@ -20,7 +22,7 @@ function Background_wave({
   waveWidth?: number;
   backgroundFill?: string;
   blur?: number;
-  speed?: 'slow' | 'fast';
+  speed: number;
   waveOpacity?: number;
   [key: string]: any;
 }) {
@@ -33,16 +35,6 @@ function Background_wave({
   let ctx: any;
   let canvas: any;
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const getSpeed = () => {
-    switch (speed) {
-      case 'slow':
-        return 0.001;
-      case 'fast':
-        return 0.002;
-      default:
-        return 0.001;
-    }
-  };
 
   const init = () => {
     canvas = canvasRef.current;
@@ -67,7 +59,7 @@ function Background_wave({
     '#22d3ee',
   ];
   const drawWave = (n: number) => {
-    nt += getSpeed();
+    nt += speed;
     for (i = 0; i < n; i++) {
       ctx.beginPath();
       ctx.lineWidth = waveWidth || 50;
@@ -87,7 +79,9 @@ function Background_wave({
     ctx.globalAlpha = waveOpacity || 0.5;
     ctx.fillRect(0, 0, w, h);
     drawWave(5);
-    animationId = requestAnimationFrame(render);
+    setTimeout(() => {
+      animationId = requestAnimationFrame(render);
+    }, 1000 / frameRate);
   };
 
   useEffect(() => {
