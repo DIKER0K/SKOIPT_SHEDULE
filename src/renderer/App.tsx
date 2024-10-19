@@ -17,6 +17,7 @@ import { LoadGroups, LoadSchedule, LoadTeacher } from "./utils/ScheduleLoad";
 import { useEffect, useRef, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 import './App.css';
+import TeachersList from './pages/TeachersList/TeachersList';
 
 
 const LoadFunctions = [
@@ -27,7 +28,7 @@ const LoadFunctions = [
 const LoadFunctionsMsg = [
   "загрузка списка групп",
   "Загрузка расписания групп",
-  "Подготовка",
+  "Загрузка расписания преподавателей",
 ]
 
 
@@ -143,6 +144,7 @@ function AppContent() {
           <Route path="/codes" element={<Codes />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/tic-tac-toe" element={<TicTacToe />} />
+          <Route path="/teachers-list" element={<TeachersList />} />
         </Routes>
       </AnimatePresence>
     </div>

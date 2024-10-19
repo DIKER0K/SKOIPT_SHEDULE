@@ -1,0 +1,27 @@
+.teachers-list {
+    padding: 10px;
+    height: 600px;
+    width: 400px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    font-size: 24px;
+    font-family: cursive;
+}
+.teachers-list::-webkit-scrollbar {
+    width: 30px;
+}
+.teachers-list::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background: #fff;
+}
+.teachers-list::-webkit-scrollbar-thumb {
+    background: #e7e7e7;
+    border-radius: 10px;
+}
+.teachers-list__teacher {
+    padding: 5px;
+    border-radius: 5px;
+}
+.teachers-list__teacher--second {
+    background-color: #e7e7e7;
+}

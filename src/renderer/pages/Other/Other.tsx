@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import GamesIcon from '@mui/icons-material/Games';
+import ArticleIcon from '@mui/icons-material/Article';
 import { useNavigate } from 'react-router-dom';
 import useInactivityRedirect from '../../components/Scripts/useInactivityRedirect';
 
@@ -49,6 +50,12 @@ function Other() {
               alignItems: 'center',
             }}
           >
+            <CustomButton
+              startIcon={<ArticleIcon />}
+              onClick={() => navigate('/teachers-list')}
+            >
+              Расписание преподавателей
+            </CustomButton>
             <CustomButton
               startIcon={<GamesIcon />}
               onClick={() => navigate('/tic-tac-toe')}
