@@ -11,7 +11,8 @@ const parser = new DOMParser();
 
 
 
-function getNextMondayTimestamp() {
+function getNextMondayTimestamp() 
+{
   const now = new Date();
   const currentDay = now.getDay();
   const daysUntilMonday = currentDay === 0 ? 0 : 7 - currentDay;
@@ -124,10 +125,13 @@ async function LoadGroup(group: string): Promise<any>
   const table = htmlDoc.querySelectorAll('.MsoNormalTable')[1];
 
   const rows = table.querySelectorAll('tr');
-  for (let i = 0; i < rows.length; i++) {
+  for (let i = 0; i < rows.length; i++) 
+  {
     const cells = rows[i].querySelectorAll('td');
     schedule[i] = [];
-    for (let j = 0; j < cells.length; j++) {
+
+    for (let j = 0; j < cells.length; j++) 
+    {
       const style: any = [];
 
       style.push(cells[j].outerText);
@@ -145,10 +149,17 @@ async function LoadGroup(group: string): Promise<any>
 
 export async function LoadTeacher(handleProgress: Function): Promise<any>
 {
-  let schedule: any = JSON.parse(localStorage.getItem('schedules') ?? '{}').schedule;
+  let schedule: any = JSON.parse(localStorage.getItem('schedules') ?? '0').schedule;
+  let teachersDict = JSON.parse(localStorage.getItem("teachers") ?? '0');
   let teachers: Array<string> = [];
 
-  for (let [key, value] of Object.entries(schedule))
+  //if (teachersDict != 0 && teachersDict.expires > Date.now())
+  //{
+  //  return
+  //}
+
+
+  for (let [group, value] of Object.entries(schedule))
   {
     //@ts-ignore
     for (let [i, o] of Object.entries(value))
@@ -164,10 +175,13 @@ export async function LoadTeacher(handleProgress: Function): Promise<any>
       }
     }
   }
-  console.log(teachers.sort())
+  teachers = teachers.sort()
+  
+  localStorage.setItem("teachers", JSON.stringify({ "teacher": teachers, "expires": getNextMondayTimestamp() }));
+  console.log(teachers)
 }
 
 function findTeacher(text: string): string | null {
-  const match = text.match(/(?<=\s)[^\s]+\s[a-zа-яё]\.[a-zа-яё]\./i);
+  const match = text.match(/(?<=\s)[^\s]+\s[а-яё]\.[а-яё]\./i);
   return match ? match[0].trim() : null;
 }
