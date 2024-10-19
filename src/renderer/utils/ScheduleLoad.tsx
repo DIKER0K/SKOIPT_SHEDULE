@@ -25,7 +25,7 @@ function getNextMondayTimestamp()
 
 
 
-export async function LoadGroups(handleProgress: Function): Promise<Boolean>
+async function LoadGroups(handleProgress: Function): Promise<Boolean>
 {
   let cources = JSON.parse(localStorage.getItem('cources') ?? '0');
 
@@ -69,7 +69,7 @@ export async function LoadGroups(handleProgress: Function): Promise<Boolean>
   return false;
 }
 
-export async function LoadSchedule(handleProgress: Function): Promise<Boolean>
+async function LoadSchedule(handleProgress: Function): Promise<Boolean>
 {
   let schedules = JSON.parse(localStorage.getItem('schedules') ?? '{"schedule": {}}');
   let isExpires = schedules.expires - Date.now() > 0
@@ -147,7 +147,7 @@ async function LoadGroup(group: string): Promise<any>
   return schedule;
 }
 
-export async function LoadTeacher(handleProgress: Function): Promise<any>
+async function LoadTeacher(handleProgress: Function): Promise<any>
 {
   let schedule: any = JSON.parse(localStorage.getItem('schedules') ?? '0').schedule;
   let teachersDict = JSON.parse(localStorage.getItem("teachers") ?? '0');
@@ -167,7 +167,7 @@ export async function LoadTeacher(handleProgress: Function): Promise<any>
       //@ts-ignore
       for (let [j, k] of Object.entries(o))
       {
-        let teacher = findTeacher(k + "");
+        let teacher = FindTeacher(k + "");
         if (!!teacher && !teachers.includes(teacher))
         {
           teachers.push(teacher);
@@ -181,7 +181,13 @@ export async function LoadTeacher(handleProgress: Function): Promise<any>
   console.log(teachers)
 }
 
-function findTeacher(text: string): string | null {
+function FindTeacher(text: string): string | null {
   const match = text.match(/(?<=\s)[^\s]+\s[а-яё]\.[а-яё]\./i);
   return match ? match[0].trim() : null;
+}
+
+export {
+  LoadGroups,
+  LoadSchedule,
+  LoadTeacher,
 }
