@@ -22,7 +22,7 @@ function Background_wave({
   waveWidth?: number;
   backgroundFill?: string;
   blur?: number;
-  speed: number;
+  speed?: number;
   waveOpacity?: number;
   [key: string]: any;
 }) {
