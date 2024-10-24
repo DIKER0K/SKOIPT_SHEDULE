@@ -54,7 +54,7 @@ function Other() {
               startIcon={<ArticleIcon />}
               onClick={() => navigate('/teachers-list')}
             >
-              Расписание преподавателей
+              Список преподавателей
             </CustomButton>
             <CustomButton
               startIcon={<GamesIcon />}

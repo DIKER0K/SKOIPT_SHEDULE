@@ -7,7 +7,7 @@ import Schedule from './pages/Schedule/Schedule';
 import Background from './components/Background/Background';
 import Navbar from './components/Navbar/Navbar';
 import Head from './components/Head/Head';
-import View from './pages/View/View';
+import View from './pages/ViewStudentSchedule/ViewStudentSchedule';
 import Other from './pages/Other/Other';
 import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
@@ -18,6 +18,8 @@ import { useEffect, useRef, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 import './App.css';
 import TeachersList from './pages/TeachersList/TeachersList';
+import ViewStudentSchedule from './pages/ViewStudentSchedule/ViewStudentSchedule';
+import ViewTeacherSchedule from './pages/ViewTeacherSchedule/ViewTeacherSchedule';
 
 
 const LoadFunctions = [
@@ -145,6 +147,8 @@ function AppContent() {
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/tic-tac-toe" element={<TicTacToe />} />
           <Route path="/teachers-list" element={<TeachersList />} />
+          <Route path="/view-student-schedule" element={<ViewStudentSchedule />} />
+          <Route path="/view-teacher-schedule" element={<ViewTeacherSchedule />} />
         </Routes>
       </AnimatePresence>
     </div>

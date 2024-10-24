@@ -27,20 +27,20 @@ function getNextMondayTimestamp()
 
 async function LoadGroups(handleProgress: Function): Promise<Boolean>
 {
-  let cources = JSON.parse(localStorage.getItem('cources') ?? '0');
+  let cources = JSON.parse(localStorage.getItem('groups') ?? '0');
 
   if (cources != 0 && cources.expires - Date.now() > 0) return true;
 
     // init
     cources = {};
     cources.expires = Date.now() + 1000 * 60 * 60 * 24 * 30; // next update
-    cources.groups = [];
+    cources.list = [];
   
     for (let loaded = 0; loaded < 4;) 
     {
       try
       {
-          cources.groups[loaded] = [];
+          cources.list[loaded] = [];
           
           let response = await axios.get(CourceUrls[loaded])
     
@@ -51,19 +51,19 @@ async function LoadGroups(handleProgress: Function): Promise<Boolean>
             ?.querySelectorAll('img');
     
           groupsDoc?.forEach((element) => {
-            cources.groups[loaded].push(element.alt);
+            cources.list[loaded].push(element.alt);
           });
           
           loaded++;
           handleProgress(loaded / CourceUrls.length * 100)
           if (loaded == CourceUrls.length) {
-            localStorage.setItem('cources', JSON.stringify(cources));
+            localStorage.setItem('groups', JSON.stringify(cources));
             return true;
           }
       }
       catch (e)
       {
-        console.log("failed load groups: " + e)
+        console.log("failed load cource: " + e)
       }
   }
   return false;
@@ -71,12 +71,12 @@ async function LoadGroups(handleProgress: Function): Promise<Boolean>
 
 async function LoadSchedule(handleProgress: Function): Promise<Boolean>
 {
-  let schedules = JSON.parse(localStorage.getItem('schedules') ?? '{"schedule": {}}');
+  let schedules = JSON.parse(localStorage.getItem('schedules') ?? '{"students": {}, "teachers": {}, "expires": 0}');
   let isExpires = schedules.expires - Date.now() > 0
 
   schedules.expires = getNextMondayTimestamp();
 
-  let cources = JSON.parse(localStorage.getItem('cources') ?? '{}').groups;
+  let cources = JSON.parse(localStorage.getItem('groups') ?? '{}').list;
 
 
   for (let c = 0; c < cources.length; c++)
@@ -84,14 +84,14 @@ async function LoadSchedule(handleProgress: Function): Promise<Boolean>
     for (let g = 0; g < cources[c].length; g++)
     {
       handleProgress((c + g / cources[c].length) / cources.length * 100)
-      if (isExpires && schedules["schedule"][cources[c][g]] != null)
+      if (isExpires && schedules["students"][cources[c][g]] != null)
       {
         continue;
       }
       try
       {
         console.log("request " + cources[c][g])
-        schedules["schedule"][cources[c][g]] = await LoadGroup(cources[c][g])
+        schedules["students"][cources[c][g]] = await LoadGroup(cources[c][g])
       }
       catch 
       {
@@ -149,8 +149,8 @@ async function LoadGroup(group: string): Promise<any>
 
 async function LoadTeacher(handleProgress: Function): Promise<any>
 {
-  let schedule: any = JSON.parse(localStorage.getItem('schedules') ?? '0').schedule;
-  let teachersDict = JSON.parse(localStorage.getItem("teachers") ?? '0');
+  let schedule: any = JSON.parse(localStorage.getItem('schedules') ?? '0').students;
+  let teachersDict: any = JSON.parse(localStorage.getItem("teachers") ?? '0');
   let teachers: Array<string> = [];
 
   //if (teachersDict != 0 && teachersDict.expires > Date.now())
@@ -177,7 +177,7 @@ async function LoadTeacher(handleProgress: Function): Promise<any>
   }
   teachers = teachers.sort()
   
-  localStorage.setItem("teachers", JSON.stringify({ "teacher": teachers, "expires": getNextMondayTimestamp() }));
+  localStorage.setItem("teachers", JSON.stringify({ "list": teachers, "expires": getNextMondayTimestamp() }));
   console.log(teachers)
 }
 
@@ -185,6 +185,9 @@ function FindTeacher(text: string): string | null {
   const match = text.match(/(?<=\s)[^\s]+\s[а-яё]\.[а-яё]\./i);
   return match ? match[0].trim() : null;
 }
+
+
+
 
 export {
   LoadGroups,

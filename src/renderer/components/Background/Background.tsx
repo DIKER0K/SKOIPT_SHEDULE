@@ -9,7 +9,8 @@ import BackGroundWave from './Backgrounds/Background_wave';
 
 const Backgrounds: JSX.Element[] = [
   <BackgroundCubics />,
-  <BackgroundCircle />,
+  // requires optimization
+  //<BackgroundCircle />,
   <BackGroundWave />,
   <BackgroundGradient />,
 ];

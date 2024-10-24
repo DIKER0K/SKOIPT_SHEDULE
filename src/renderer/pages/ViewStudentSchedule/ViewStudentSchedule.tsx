@@ -3,7 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import './View.css';
+import './ViewStudentSchedule.css';
 import useInactivityRedirect from '../../components/Scripts/useInactivityRedirect';
 import "../../App.css"
 
@@ -23,9 +23,9 @@ function Load(group: string, handleChange: Function) {
 
   schedules = JSON.parse(localStorage.getItem('schedules') ?? '0');
 
-  if (schedules.schedule[group] != null)
+  if (schedules.students != null && schedules.students[group] != null)
   {
-    handleChange(schedules.schedule[group]);
+    handleChange(schedules.students[group]);
   }
   else
   {
@@ -35,7 +35,7 @@ function Load(group: string, handleChange: Function) {
   
 }
 
-export default function View() {
+export default function ViewStudentSchedule() {
   useInactivityRedirect();
   const [schedule, setSchedule] = React.useState(
     <CircularProgress sx={{ marginTop: '280px' }} />

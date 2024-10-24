@@ -6,7 +6,7 @@ import "./TeachersList.css"
 function TeachersList()
 {
     const navigate = useNavigate();
-    const teachers: string[] = JSON.parse(localStorage.getItem("teachers") ?? "[]").teacher
+    const teachers: string[] = JSON.parse(localStorage.getItem("teachers") ?? "{}").list
     let elements: JSX.Element[] = []
 
     for (let i = 0; i < teachers.length; i++)
@@ -14,7 +14,8 @@ function TeachersList()
         elements.push(
             <div 
                 className={"teachers-list__teacher " + (i%2 == 0 ? "" : "teachers-list__teacher--second")} 
-                onClick={() => navigate(`/view?group=${teachers[i]}`)}
+                // for teacher schedule
+                //onClick={() => navigate(`/view-teacher-schedule?teacher=${teachers[i]}`)}
             >
                 {teachers[i]}
             </div>
