@@ -9,9 +9,9 @@ function Calls() {
   return (
     <div className='absolute-center'>
       <motion.div
-        initial={{ opacity: 0, scale: 0, y: 500, filter: 'blur(10px)' }}
-        animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
-        exit={{ opacity: 0, scale: 0, y: -500, filter: 'blur(10px)' }}
+        initial={{ opacity: 0, scale: 0, y: 500 }}
+        animate={{ opacity: 1, scale: 1, y: 0}}
+        exit={{ opacity: 0, scale: 0, y: -500 }}
         transition={{ type: 'spring', stiffness: 50 }}
       >
         <Paper

@@ -103,7 +103,7 @@ export default function Schedule() {
     setValue(newValue);
 
   React.useEffect(() => {
-    HandleChangeCources(JSON.parse(localStorage.getItem('cources') ?? '0').groups);
+    HandleChangeCources(JSON.parse(localStorage.getItem('groups') ?? '0').list);
   }, [HandleChangeCources]);
 
   return (

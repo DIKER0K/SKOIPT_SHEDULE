@@ -7,26 +7,32 @@ import Schedule from './pages/Schedule/Schedule';
 import Background from './components/Background/Background';
 import Navbar from './components/Navbar/Navbar';
 import Head from './components/Head/Head';
-import View from './pages/View/View';
+import View from './pages/ViewStudentSchedule/ViewStudentSchedule';
 import Other from './pages/Other/Other';
 import Codes from './pages/Codes/Codes';
 import Feedback from './pages/Feedback/Feedback';
 import TicTacToe from './pages/TicTacToe/TicTacToe';
 import UpdateNotification from './components/UpdateNotification/UpdateNotification';
-import { LoadGroups, LoadSchedule } from "./utils/ScheduleLoad";
+import { LoadGroups, LoadSchedule, LoadTeacher } from "./utils/ScheduleLoad";
 import { useEffect, useRef, useState } from 'react';
 import { LinearProgress } from '@mui/material';
 import './App.css';
+import TeachersList from './pages/TeachersList/TeachersList';
+import ViewStudentSchedule from './pages/ViewStudentSchedule/ViewStudentSchedule';
+import ViewTeacherSchedule from './pages/ViewTeacherSchedule/ViewTeacherSchedule';
 
 
 const LoadFunctions = [
   LoadGroups,
   LoadSchedule,
+  LoadTeacher,
 ]
 const LoadFunctionsMsg = [
   "загрузка списка групп",
   "Загрузка расписания групп",
+  "Загрузка расписания преподавателей",
 ]
+
 
 
 function Event_keydown(event: KeyboardEvent)
@@ -57,12 +63,8 @@ function CheckVersion()
 {
   const { version } = require('../../release/app/package.json');
 
-  if (localStorage.getItem("version")?.split(".")[0] == version.split(".")[0])
+  if (localStorage.getItem("version") == version)
   {
-    if (localStorage.getItem("version") != version)
-    {
-      localStorage.setItem("version", version);
-    }
     return;
   }
   
@@ -144,6 +146,9 @@ function AppContent() {
           <Route path="/codes" element={<Codes />} />
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/tic-tac-toe" element={<TicTacToe />} />
+          <Route path="/teachers-list" element={<TeachersList />} />
+          <Route path="/view-student-schedule" element={<ViewStudentSchedule />} />
+          <Route path="/view-teacher-schedule" element={<ViewTeacherSchedule />} />
         </Routes>
       </AnimatePresence>
     </div>
