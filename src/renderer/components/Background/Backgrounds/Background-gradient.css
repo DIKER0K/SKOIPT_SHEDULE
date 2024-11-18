@@ -9,7 +9,7 @@
 .background__bg {
     opacity: .5;
     animation-name: background-slide;
-    animation-timing-function: ease-in-out;
+    animation-timing-function: steps(30);
     animation-iteration-count: infinite;
     background: linear-gradient(-40deg, var(--bg-color-1) 50%, var(--bg-color-2) 50%);
     position: inherit;
@@ -17,19 +17,21 @@
     top: 0;
     right: -50%;
     left: -50%;
-    animation-iteration-count: 30;
 }
 .background__bg--1 {
     animation-direction: alternate;
     animation-duration: 3s;
+    animation-timing-function: steps(90);
 }
 .background__bg--2 {
     animation-direction: alternate-reverse;
     animation-duration: 4s;
+    animation-timing-function: steps(120);
 }
 .background__bg--3 {
     animation-direction: alternate;
     animation-duration: 5s;
+    animation-timing-function: steps(150);
 }
 @keyframes background-slide {
     from {
